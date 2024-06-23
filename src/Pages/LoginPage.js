@@ -17,7 +17,7 @@ const LoginPage = () => {
             setIsLoading(true);
             await signIn(email, password);
             setIsLoading(false);
-            navigate('/scan');
+            navigate('/');
         } catch (error) {
             setIsLoading(false);
             setError(error.message);
