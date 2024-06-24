@@ -26,14 +26,13 @@ const HomePage = () => {
         try {
             setFetchingSessionId(true);
             const sessionId = await getStripeCheckoutSessionId(accessToken);
-            console.log('Session ID:', sessionId);
             const stripe = await stripePromise;
             const { error } = await stripe.redirectToCheckout({ sessionId: sessionId });
             if (error) {
                 setFetchingSessionIdError(error.message);
             }
             setFetchingSessionId(false);
-            
+
         } catch (error) {
             setFetchingSessionId(false);
             setFetchingSessionIdError(error.message);
@@ -52,12 +51,14 @@ const HomePage = () => {
                                 <h2>Welcome, {user.first_name}!</h2>
                                 <p className='margin-bottom'>Let's build something.</p>
                                 <div className='max-width'>
-                                    <CanLoad isLoading={fetchingSessionId}>
-                                        <div className='max-width'>
-                                            {fetchingSessionIdError && <p className='error'>{fetchingSessionIdError}</p>}
-                                            <button className='button-style primary-button-color max-width margin-top-20' onClick={handleSetUpPayment}>Set Up Payment</button>
-                                        </div>
-                                    </CanLoad>
+                                    {!user.has_payment_set_up && (
+                                        <CanLoad isLoading={fetchingSessionId}>
+                                            <div className='max-width'>
+                                                {fetchingSessionIdError && <p className='error'>{fetchingSessionIdError}</p>}
+                                                <button className='button-style primary-button-color max-width margin-top-20' onClick={handleSetUpPayment}>Set Up Payment</button>
+                                            </div>
+                                        </CanLoad>
+                                    )}
                                 </div>
                             </div>
                         )}

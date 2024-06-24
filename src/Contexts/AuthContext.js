@@ -121,6 +121,7 @@ const hasValidAuthToken = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+    const [isInitializing, setIsInitializing] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
 
@@ -129,7 +130,8 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             setAccessToken(localStorage.getItem('accessToken'));
         }
-    }, [setIsAuthenticated, setAccessToken]);
+        setIsInitializing(false);
+    }, [setIsAuthenticated, setAccessToken, setIsInitializing]);
 
     const handleSignUp = useCallback(async (email, password, firstName, lastName) => {
         await signUp(email, password, firstName, lastName);
@@ -143,7 +145,7 @@ export const AuthProvider = ({ children }) => {
         if (await signIn(username, password)) {
             setIsAuthenticated(true);
             setAccessToken(localStorage.getItem('accessToken'));
-            console.log('Access token:', localStorage.getItem('accessToken'));
+            //console.log('Access token:', localStorage.getItem('accessToken'));
         }
     }, [setIsAuthenticated, setAccessToken]);
 
@@ -155,6 +157,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
+            isInitializing,
             isAuthenticated,
             accessToken,
             signUp: handleSignUp,

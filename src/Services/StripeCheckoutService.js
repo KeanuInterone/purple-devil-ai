@@ -19,3 +19,23 @@ export const getStripeCheckoutSessionId = async (accessToken) => {
         throw new Error('Error fetching Stripe checkout session.');
     }
 };
+
+export const confirmStripeCheckoutSession = async (accessToken, sessionId) => {
+    try {
+        const response = await axios.post(
+            getStripeFunctionUrl(),
+            {
+                access_token: accessToken,
+                function_name: 'confirm_checkout_session',
+                session_id: sessionId,
+            },
+        );
+        if (response.data.error) {
+            throw new Error(response.data.error);
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error confirming Stripe checkout session:', error);
+        throw new Error('Error confirming Stripe checkout session.');
+    }
+};

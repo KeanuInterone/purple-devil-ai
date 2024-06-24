@@ -6,10 +6,21 @@ import LoginPage from './Pages/LoginPage';
 import SignUpPage from './Pages/SignUpPage';
 import ConfirmSignUpPage from './Pages/ConfirmSignUpPage';
 import HomePage from './Pages/HomePage';
+import ConfirmPaymentSetUpPage from './Pages/ConfirmPaymentSetUpPage';
+import CanLoad from './Components/CanLoad';
 
 function App() {
-    const { isAuthenticated } = useAuth();
+    const { isInitializing, isAuthenticated } = useAuth();
 
+    if (isInitializing) {
+        return (
+            <div className="cover-page flex-column-center">
+                <CanLoad isLoading={isInitializing}>
+                    <div style={{ height: '100px', width: '100px' }}></div>
+                </CanLoad>
+            </div>
+        );
+    }
 
     return (
         <div className="app">
@@ -31,6 +42,10 @@ function App() {
                         <Route
                             path="/"
                             element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
+                        />
+                        <Route
+                            path="/confirm-payment-setup/:session_id"
+                            element={isAuthenticated ? <ConfirmPaymentSetUpPage /> : <Navigate to="/login" />}
                         />
                     </Routes>
                 </div>

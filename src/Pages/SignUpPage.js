@@ -36,7 +36,7 @@ const SignUpPage = () => {
             <h1 className='login-logo'>😈</h1>
             <h1 className='no-margin margin-bottom-20'>Purple Devil AI</h1>
             <div className="mobile-width">
-                <div classname="max-width">
+                <div className="max-width">
                     <CanLoad isLoading={isLoading}>
                         <form onSubmit={handleSubmit}>
                             <h2>Sign Up</h2>
